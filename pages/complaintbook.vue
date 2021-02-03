@@ -1,0 +1,52 @@
+<template>
+  <div class="container">
+    <v-header></v-header>
+    <v-breadcrumb :path="path"></v-breadcrumb>
+    <div class="content">
+      <h2>Обратная связь</h2>
+    </div>
+    <v-footer></v-footer>
+  </div>
+</template>
+
+<script>
+import vHeader from "~/components/vHeader.vue";
+import vBreadcrumb from "~/components/vBreadcrumb.vue";
+import vFooter from "~/components/vFooter.vue";
+
+export default {
+  components: {
+    vHeader,
+    vBreadcrumb,
+    vFooter
+  },
+  data() {
+    return {
+      title: "Обратная связь"
+    };
+  },
+  head() {
+    return {
+      title: this.title,
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content: this.title
+        }
+      ]
+    };
+  },
+  computed: {
+    path() {
+      return [{ link: `${this.$route.path}/`, title: this.title }];
+    }
+  },
+  created() {
+    this.$store.dispatch("cars/fetch", this.activeRegion);
+  }
+};
+</script>
+
+<style lang="sass"></style>
