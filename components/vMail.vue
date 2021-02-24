@@ -13,7 +13,7 @@
 export default {
   computed: {
     email() {
-      return this.$store.state.info.email;
+      return this.$store.getters["info/email"];
     }
   }
 };

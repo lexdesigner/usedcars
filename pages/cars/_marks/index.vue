@@ -19,7 +19,7 @@ import vFooter from "~/components/vFooter.vue";
 import carsList from "~/components/carsList.vue";
 
 export default {
-  async asyncData({ params, store }) {
+  async asyncData({ params }) {
     return { title: params.marks };
   },
   components: {
@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     carsLength() {
-      return this.$store.state.cars.currentCars.length;
+      return this.$store.getters["cars/markFiltered"].length;
     },
     timeNow() {
       const date = new Date();

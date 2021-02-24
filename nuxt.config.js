@@ -14,7 +14,13 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [
+      {
+        rel: "stylesheet",
+        href: "https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -35,21 +41,8 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/firebase"],
-  firebase: {
-    config: {
-      apiKey: "AIzaSyBBGwPHxJ3wGVxT8AXApm-5SBsX-fJ2yMU",
-      authDomain: "usedcars-genser.firebaseapp.com",
-      databaseURL: "https://usedcars-genser-default-rtdb.firebaseio.com",
-      projectId: "usedcars-genser",
-      storageBucket: "usedcars-genser.appspot.com",
-      messagingSenderId: "98025860148",
-      appId: "1:98025860148:web:11e13a1e5397f43b6b2e61"
-    },
-    services: {
-      database: true // Just as example. Can be any other service.
-    }
-  },
+  modules: ["@nuxtjs/axios"],
+
   /*
    ** Build configuration
    */

@@ -21,6 +21,12 @@ export default {
   computed: {
     year() {
       return new Date().getFullYear();
+    },
+    phone() {
+      return this.$store.getters["info/phone"];
+    },
+    email() {
+      return this.$store.getters["info/email"];
     }
   }
 };

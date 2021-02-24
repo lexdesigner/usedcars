@@ -1,6 +1,6 @@
 <template>
   <el-header>
-    <nuxt-link no-prefetch to="/">
+    <nuxt-link to="/">
       <img src="~/assets/img/logo.gif" alt="Genser" class="img-responsive" />
     </nuxt-link>
     <el-menu mode="horizontal">
@@ -71,14 +71,12 @@
     <el-dropdown trigger="click" @command="changeRegion">
       <span class="el-dropdown-link">
         Выберите регион:
-        <el-link type="primary">{{
-          this.$store.state.info.activeRegion
-        }}</el-link>
+        <el-link type="primary">{{ activeRegion }}</el-link>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
-          v-for="(reg, index) in this.$store.state.info.regions"
+          v-for="(reg, index) in regions"
           :key="reg + index"
           :command="reg"
           >{{ reg }}</el-dropdown-item
@@ -90,10 +88,18 @@
 
 <script>
 export default {
+  computed: {
+    regions() {
+      return this.$store.getters["info/regions"];
+    },
+    activeRegion() {
+      return this.$store.getters["info/activeRegion"];
+    }
+  },
   methods: {
     changeRegion(region) {
       this.$store.commit("info/changeRegion", region);
-      this.$store.dispatch("cars/fetch", region);
+      this.$store.dispatch("cars/fetchCars", region);
     }
   }
 };

@@ -174,7 +174,7 @@ export default {
         };
       });
       this.modelList.forEach((item, index) => {
-        const cars = this.$store.state.cars.cars;
+        const cars = this.$store.getters["cars/cars"];
         const carsItem = cars.filter(car => car.name == item.mark);
         item.models = carsItem.map(car => car.model);
         item.models = [...new Set(item.models)].sort();
@@ -183,7 +183,7 @@ export default {
     },
     refreshKpp() {
       this.kppList = [];
-      const cars = this.$store.state.cars.cars;
+      const cars = this.getCars;
       if (!this.dataForm.mark.length && !this.dataForm.model.length) {
         this.kppList = cars.map(car => car.transmission);
         this.kppList = [...new Set(this.kppList)].sort();
@@ -213,7 +213,7 @@ export default {
     },
     refreshYear() {
       this.yearsList = [];
-      const cars = this.$store.state.cars.cars;
+      const cars = this.getCars;
       if (!this.dataForm.mark.length & !this.dataForm.model.length) {
         this.yearsList = cars.map(car => car.year);
         this.yearsList = [...new Set(this.yearsList)].sort();
@@ -243,7 +243,7 @@ export default {
     },
     refreshType() {
       this.typeList = [];
-      const cars = this.$store.state.cars.cars;
+      const cars = this.getCars;
       if (!this.dataForm.mark.length & !this.dataForm.model.length) {
         this.typeList = cars.map(car => car.type);
         this.typeList = [...new Set(this.typeList)].sort();
@@ -273,7 +273,7 @@ export default {
     },
     refreshDrive() {
       this.driveList = [];
-      const cars = this.$store.state.cars.cars;
+      const cars = this.getCars;
       if (!this.dataForm.mark.length & !this.dataForm.model.length) {
         this.driveList = cars.map(car => car.drive);
         this.driveList = [...new Set(this.driveList)].sort();
@@ -327,17 +327,20 @@ export default {
   },
   computed: {
     minRange() {
-      const prices = this.$store.state.cars.cars.map(car => car.price);
+      const prices = this.getCars().map(car => car.price);
       return Math.min(...prices) || 0;
     },
     maxRange() {
-      const prices = this.$store.state.cars.cars.map(car => car.price);
+      const prices = this.getCars().map(car => car.price);
       return Math.max(...prices) || 20000000;
+    },
+    getCars() {
+      return this.$store.getters["cars/cars"];
     }
   },
   created() {
     this.refreshOptions();
-    const cars = this.$store.state.cars.cars;
+    const cars = this.getCars;
     const counter = cars.reduce((obj, i) => {
       if (!obj.hasOwnProperty(i.name)) {
         obj[i.name] = 0;

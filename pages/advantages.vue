@@ -111,9 +111,6 @@ export default {
     path() {
       return [{ link: `${this.$route.path}/`, title: this.title }];
     }
-  },
-  created() {
-    this.$store.dispatch("cars/fetch", this.activeRegion);
   }
 };
 </script>

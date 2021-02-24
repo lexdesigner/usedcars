@@ -1,7 +1,8 @@
 export const state = () => ({
   cars: [],
   currentCars: [],
-  car: {}
+  car: {},
+  markFiltered: []
 });
 
 export const mutations = {
@@ -9,26 +10,26 @@ export const mutations = {
     state.cars = state.cars.filter(car => car.region === region);
     state.currentCars = state.cars;
   },
-  sortCars(state, { column, prop, order }) {
-    if (order == "descending") {
+  sortCars(state, { prop, order }) {
+    if (order === "descending") {
       state.currentCars.sort((a, b) => {
-        if (typeof prop == "string") {
+        if (typeof prop === "string") {
           return a[prop] < b[prop] ? 1 : -1;
-        } else if (typeof prop == "number") {
+        } else if (typeof prop === "number") {
           return a[prop] - b[prop];
         }
       });
-    } else if (order == "ascending") {
+    } else if (order === "ascending") {
       state.currentCars.sort((a, b) => {
         {
-          if (typeof prop == "string") {
+          if (typeof prop === "string") {
             return a[prop] > b[prop] ? 1 : -1;
-          } else if (typeof prop == "number") {
+          } else if (typeof prop === "number") {
             return b[prop] - a[prop];
           }
         }
       });
-    } else if (order == null) {
+    } else {
       state.currentCars = state.cars;
     }
   },
@@ -38,6 +39,11 @@ export const mutations = {
   },
   setCar(state, car) {
     state.car = car[0];
+  },
+  getMarks(state, mark) {
+    state.markFiltered = state.cars.filter(
+      car => car.name.toLowerCase() === mark.toLowerCase()
+    );
   },
   filterCars(
     state,
@@ -103,30 +109,26 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetch({ commit }, region) {
-    try {
-      await this.$fireModule
-        .database()
-        .ref("cars")
-        .on("value", snapshot => {
-          commit(
-            "setCars",
-            snapshot.val().filter(car => car.region === region)
-          );
-        });
-    } catch (e) {}
+  async fetchCars({ commit }, region) {
+    const cars = await this.$axios.$get(
+      "https://usedcars-genser-default-rtdb.firebaseio.com/cars.json"
+    );
+    commit(
+      "setCars",
+      cars.filter(car => car.region === region)
+    );
   },
-  async fetchCar({ commit }, id) {
-    try {
-      await this.$fireModule
-        .database()
-        .ref("cars")
-        .on("value", snapshot => {
-          commit(
-            "setCar",
-            snapshot.val().filter(car => car.id === id)
-          );
-        });
-    } catch (e) {}
+  fetchCar({ state, commit }, id) {
+    commit(
+      "setCar",
+      state.cars.filter(car => car.id === id)
+    );
   }
+};
+
+export const getters = {
+  currentCars: s => s.currentCars,
+  cars: s => s.cars,
+  car: s => s.car,
+  markFiltered: s => s.markFiltered
 };

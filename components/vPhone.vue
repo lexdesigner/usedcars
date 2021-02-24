@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     phone() {
-      return this.$store.state.info.phone;
+      return this.$store.getters["info/phone"];
     }
   }
 };

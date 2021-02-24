@@ -117,7 +117,6 @@ export default {
   },
   data() {
     return {
-      title: this.$store.state.cars.car.fullName,
       responsiveThumbsCarousel: {
         0: {
           items: 1
@@ -133,13 +132,13 @@ export default {
   },
   head() {
     return {
-      title: this.$store.state.cars.car.fullName,
+      title: this.carLoad.fullName,
       meta: [
         // hid is used as unique identifier. Do not use `vmid` for it as it will not work
         {
           hid: "description",
           name: "description",
-          content: this.title
+          content: this.carLoad.fullName
         }
       ]
     };
@@ -156,19 +155,21 @@ export default {
   },
   computed: {
     carLoad() {
-      console.log(this.$store.state.cars.car);
-      return this.$store.state.cars.car;
+      return this.$store.getters["cars/car"];
+    },
+    title() {
+      return this.$store.getters["cars/car"].fullName;
     },
     path() {
       return [
         { link: "/cars/", title: "Все автомобили" },
         {
           link: `/cars/${this.$route.path.split("/")[2]}/`,
-          title: this.ucFirst(this.$store.state.cars.car.name)
+          title: this.ucFirst(this.carLoad.name)
         },
         {
           link: `${this.$route.path}/`,
-          title: this.$store.state.cars.car.fullName
+          title: this.carLoad.fullName
         }
       ];
     }
